@@ -8,7 +8,7 @@ from fast_api_zero.schemas import (
     UserDB,
     UserList,
     UserPublic,
-    UserSchema,
+    UserSchema
 )
 
 app = FastAPI()
@@ -63,16 +63,13 @@ def delete_user(user_id: int):
     return {'message': 'User deleted!'}
 
 
-# EXERCICIOS
-# @app.get('/exercise', status_code=HTTPStatus.OK, response_class=HTMLResponse)
-# def read_exercise():
-#     return "<html lang='pt-BR'>\
-#             <head>\
-#                 <title>Exibição de Conteúdo</title>\
-#             </head>\
-#             <body>\
-#                 <div>\
-#                     <p>author: Leandro</p>\
-#                 </div>\
-#             </body>\
-#             </html>"
+# Exercicio
+@app.get('/users/{user_id}', response_model=UserPublic)
+def read_user_name(user_id: int):
+    if user_id > len(database) or user_id < 1:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND, detail='User not found'
+        )
+
+    return database[user_id - 1]
+

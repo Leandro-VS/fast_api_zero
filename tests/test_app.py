@@ -62,26 +62,47 @@ def test_update_user(client):
     }
 
 
+# Exercicio
+def test_update_user_error(client):
+    response = client.put(
+        '/users/-1',
+        json={
+            'username': 'testusername2',
+            'email': 'test2@test2.com',
+            'password': 'novasenha',
+            'id': -1,
+        },
+    )
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+# Exercicio
+def test_read_user(client):
+    response = client.get('/users/1')
+
+    assert response.json() == {
+        'username': 'testusername2',
+        'email': 'test2@test2.com',
+        'id': 1,
+    }
+
+
+# Exercicio
+def test_read_user_error(client):
+    response = client.get('/users/-1')
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+
 def test_delete_user(client):
     response = client.delete('/users/1')
 
     assert response.json() == {'message': 'User deleted!'}
 
 
-# EXERCICIOS
-# def test_exercise_deve_retornar_ok_e_leandro():
-#     client = TestClient(app)  # Arrange
+# Exercicio
+def test_delete_user_error(client):
+    response = client.delete('/users/-1')
 
-#     response = client.get('/exercise')  # Act
-#     print(response)
-#     assert response.status_code == HTTPStatus.OK  # Assert
-#     assert response.text == "<html lang='pt-BR'>\
-#             <head>\
-#                 <title>Exibição de Conteúdo</title>\
-#             </head>\
-#             <body>\
-#                 <div>\
-#                     <p>author: Leandro</p>\
-#                 </div>\
-#             </body>\
-#             </html>"  # Assert
+    assert response.status_code == HTTPStatus.NOT_FOUND
