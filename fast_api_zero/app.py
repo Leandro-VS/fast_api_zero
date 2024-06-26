@@ -8,7 +8,7 @@ from fast_api_zero.schemas import (
     UserDB,
     UserList,
     UserPublic,
-    UserSchema
+    UserSchema,
 )
 
 app = FastAPI()
@@ -72,4 +72,3 @@ def read_user_name(user_id: int):
         )
 
     return database[user_id - 1]
-
