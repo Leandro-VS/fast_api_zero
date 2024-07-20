@@ -63,7 +63,21 @@ def test_update_user(client, user):
     }
 
 
+def test_delete_user(client, user):
+    response = client.delete('/users/1')
+
+    assert response.json() == {'message': 'User deleted!'}
+
+
 # Exercicio
+def test_delete_user_error(client, user):
+    response = client.delete('/users/-1')
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+##########################################################
+# Exercicios
 def test_update_user_error(client, user):
     response = client.put(
         '/users/-1',
@@ -78,14 +92,29 @@ def test_update_user_error(client, user):
     assert response.status_code == HTTPStatus.NOT_FOUND
 
 
-def test_delete_user(client, user):
-    response = client.delete('/users/1')
+def test_create_user_error_usernameexist(client, user):
+    # Enviando o UserSchema
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'Teste',
+            'password': 'test',
+            'email': 'test2@test2.com',
+        },
+    )
 
-    assert response.json() == {'message': 'User deleted!'}
+    assert response.status_code == HTTPStatus.BAD_REQUEST
 
 
-# Exercicio
-def test_delete_user_error(client, user):
-    response = client.delete('/users/-1')
+def test_create_user_error_emailexist(client, user):
+    # Enviando o UserSchema
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'Teste2',
+            'password': 'test',
+            'email': 'test@test.com',
+        },
+    )
 
-    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.status_code == HTTPStatus.BAD_REQUEST
