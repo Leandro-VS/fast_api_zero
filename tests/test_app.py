@@ -104,6 +104,7 @@ def test_create_user_error_usernameexist(client, user):
     )
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.json() == {'detail': 'Username already exists'}
 
 
 def test_create_user_error_emailexist(client, user):
@@ -118,3 +119,4 @@ def test_create_user_error_emailexist(client, user):
     )
 
     assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.json() == {'detail': 'Email already exists'}
